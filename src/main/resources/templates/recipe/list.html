@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipes</title>
+</head>
+<body>
+    <h1>Recipes</h1>
+    <table style="width:100%">
+        <tr th:each="recipe: ${recipes}">
+            <td><h3 th:text="${recipe.description}">Description</h3></td>
+            <td>
+                <ul>
+                    <li>Preparation Time: <dev th:text="${recipe.prepTime}"></dev></li>
+                    <li>Cooking Time: <dev th:text="${recipe.cookTime}"></dev></li>
+                    <li>Servings:<dev th:text="${recipe.servings}"></dev></li>
+                    <li>Categories:
+                        <ul>
+                            <li th:each="cat: ${recipe.categories}"><dev th:text="${cat.name}"></dev></li>
+                        </ul>
+                    </li>
+                    <li>Source: <dev th:text="${recipe.source}"></dev><br/></li>
+                    <li>URL: <a th:href="${recipe.url}"><span th:text="${recipe.url}"></span></a></li>
+                </ul>
+            </td>
+            <td>
+                <dev>Ingredients:</dev>
+                <ul>
+                    <li th:each="ingredient: ${recipe.ingredients}">
+                        <p style="width:300px">
+                            <dev th:text="${ingredient.amount}"></dev>
+                            <span th:if="${ingredient.uom}"><dev th:text="${ingredient.uom.name}"></dev><span th:if="${ingredient.amount > 1.0}">s</span></span>
+                             <dev th:text="${ingredient.name}"></dev>
+                        </p>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <dev>Directions:</dev>
+                <ol>
+                    <li th:each="step: ${#strings.arraySplit(recipe.directions, '||')}">
+                        <dev th:text="${step}"></dev>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
