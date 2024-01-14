@@ -7,9 +7,11 @@ import guru.springframework.domain.UnitOfMeasure;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import java.util.Optional;
  * @author john
  * @since 05/01/2024
  */
+@Slf4j
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -32,11 +35,13 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         loadData();
     }
 
     private void loadData() {
+        log.info("LOADING DATA");
         loadGuacamole();
         loadSpicyGrilledChickenTacos();
 
@@ -44,6 +49,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadSpicyGrilledChickenTacos() {
+        log.info("Loading Grilled Chicken Tacos");
         Optional<UnitOfMeasure> teaspoon = unitOfMeasureRepository.findByName("Teaspoon");
         Optional<UnitOfMeasure> tablespoon = unitOfMeasureRepository.findByName("Tablespoon");
         Ingredient ancho = new Ingredient("ancho chili powder", new BigDecimal(1), tablespoon.get());
@@ -86,7 +92,7 @@ public class DataLoader implements CommandLineRunner {
         grilledChickenTacos.setUrl("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
 
         recipeRepository.save(grilledChickenTacos);
-        System.out.println(grilledChickenTacos.getDescription() + " Recipe Loaded...");
+        log.info("{} Recipe Loaded", grilledChickenTacos.getDescription());
     }
 
     private static void addCategory(Recipe recipe, Category category) {
@@ -95,6 +101,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadGuacamole() {
+        log.info("Loading Gucamole");
         Optional<UnitOfMeasure> teaspoon = unitOfMeasureRepository.findByName("Teaspoon");
         Optional<UnitOfMeasure> tablespoon = unitOfMeasureRepository.findByName("Tablespoon");
         Optional<UnitOfMeasure> pinch = unitOfMeasureRepository.findByName("Pinch");
@@ -141,6 +148,7 @@ public class DataLoader implements CommandLineRunner {
         guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
 
         recipeRepository.save(guacamole);
-        System.out.println("Guacamole Recipe Loaded...");
+        log.info("{} Recipe Loaded", guacamole.getDescription());
+
     }
 }
