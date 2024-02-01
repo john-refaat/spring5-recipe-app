@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipes</title>
+    <!-- Bootstrap CSS -->
+
+    <script src="/webjars/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css"  rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+        <div class="col-md-12 col-md-offset-3 mx-auto">
+                <div class="card">
+                    <div class="card-header text-white bg-primary">
+                        <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
+                        <h3 class="card-title" th:text="${recipe.description}">Description Here!</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5>Categories:</h5>
+                            </div>
+                            <div class="col-md-10">
+                                <ul>
+                                    <li th:each="category: ${recipe.categories}" th:text="${category.name}">Category</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5>Prep Time:</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p th:text="${(recipe.prepTime + ' min')}">Prep time</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Difficulty:</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p th:text="${recipe.difficulty}">Difficulty Goes Here</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5>Cooking Time:</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p th:text="${(recipe.cookTime + ' min')}">Cooking Time</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Servings:</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p th:text="${recipe.servings}">3</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5>Source:</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <p th:text="${recipe.source}">Source</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>URL:</h5>
+                            </div>
+                            <div class="col-md-4">
+                                <a th:href="${recipe.url}" th:text="${recipe.url}">https://example.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-md-12 col-md-offset-3 mx-auto">
+                <div class="card">
+                    <div class="card-header text-white bg-primary">
+                        <h3 class="card-title">Ingredients</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul th:each="ingredient: ${recipe.ingredients}">
+                                    <li><span th:if="${ingredient.amount}" th:text="${ingredient.amount} "></span>
+                                        <span th:if="${ingredient.uom}" th:text="${ingredient.uom.name} "></span>
+                                        <span th:text="${ingredient.name}"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-md-12 col-md-offset-3 mx-auto">
+                <div class="card">
+                    <div class="card-header text-white bg-primary">
+                        <h3 class="card-title">Directions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p th:each="step: ${#strings.arraySplit(recipe.directions, '||')}" th:text="${step}">Society excited by cottage private an it esteems. Fully begin on by wound an. Girl rich in do up or both. At declared in as rejoiced of together. He impression collecting delightful unpleasant by prosperous as on. End too talent she object mrs wanted remove giving.
+
+                                    Sing long her way size. Waited end mutual missed myself the little sister one. So in pointed or chicken cheered neither spirits invited. Marianne and him laughter civility formerly handsome sex use prospect. Hence we doors is given rapid scale above am. Difficult ye mr delivered behaviour by an. If their woman could do wound on. You folly taste hoped their above are and but.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-md-12 col-md-offset-3 mx-auto">
+                <div class="card">
+                    <div class="card-header text-white bg-primary">
+                        <h3 class="card-title">Notes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p th:text="${recipe.note?.content}">
+                                    Do so written as raising parlors spirits mr elderly. Made late in of high left hold. Carried females of up highest calling. Limits marked led silent dining her she far. Sir but elegance marriage dwelling likewise position old pleasure men. Dissimilar themselves simplicity no of contrasted as. Delay great day hours men. Stuff front to do allow to asked he.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+
+</div>
+</body>
+</html>

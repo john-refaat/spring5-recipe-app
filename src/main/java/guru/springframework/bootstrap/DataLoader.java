@@ -1,9 +1,6 @@
 package guru.springframework.bootstrap;
 
-import guru.springframework.domain.Category;
-import guru.springframework.domain.Ingredient;
-import guru.springframework.domain.Recipe;
-import guru.springframework.domain.UnitOfMeasure;
+import guru.springframework.domain.*;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
@@ -90,7 +87,7 @@ public class DataLoader implements CommandLineRunner {
 
         grilledChickenTacos.setSource("Simply Recipes");
         grilledChickenTacos.setUrl("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
-
+        grilledChickenTacos.setDifficulty(Difficulty.EASY);
         recipeRepository.save(grilledChickenTacos);
         log.info("{} Recipe Loaded", grilledChickenTacos.getDescription());
     }
@@ -126,7 +123,7 @@ public class DataLoader implements CommandLineRunner {
         guacamole.setServings(3);
         addCategory(guacamole, mexican);
         addCategory(guacamole, american);
-
+        guacamole.setDifficulty(Difficulty.EASY);
 
         guacamole.addIngredient(avo).addIngredient(salt).addIngredient(lime).addIngredient(onion).addIngredient(chilli)
                 .addIngredient(cilantro).addIngredient(blackPepper).addIngredient(tomato)
@@ -144,6 +141,9 @@ public class DataLoader implements CommandLineRunner {
                 "Garnish with slices of red radish or jigama strips. Serve with your choice of store-bought tortilla chips or make your own homemade tortilla chips.||" +
                 "Refrigerate leftover guacamole up to 3 days.||" +
                 "Note: Chilling tomatoes hurts their flavor. So, if you want to add chopped tomato to your guacamole, add it just before serving.");
+        Note note = new Note();
+        note.setContent("Chilling tomatoes hurts their flavor. So, if you want to add chopped tomato to your guacamole, add it just before serving.");
+        guacamole.setNote(note);
         guacamole.setSource("Simply recipes");
         guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
 
