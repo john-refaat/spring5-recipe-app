@@ -7,6 +7,7 @@ import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
+    @Transactional
     @Override
     public Set<Recipe> getRecipes() {
         log.info("Get Recipe service");
@@ -41,6 +43,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
+    @Transactional
     @Override
     public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
         Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
