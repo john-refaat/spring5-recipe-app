@@ -51,7 +51,7 @@ public class Recipe {
     private Byte[] image;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Note note;
+    private Notes notes;
 
     @Setter
     @ManyToMany
@@ -73,7 +73,7 @@ public class Recipe {
                 ", directions='" + directions + '\'' +
                 ", ingredients=" + ingredients +
                 ", difficulty=" + difficulty +
-                ", note=" + note +
+                ", note=" + notes +
                 ", categories=" + categories +
                 '}';
     }
@@ -84,9 +84,11 @@ public class Recipe {
         return this;
     }
 
-    public void setNote(Note note) {
-        note.setRecipe(this);
-        this.note = note;
+    public void setNotes(Notes notes) {
+        if (notes !=null) {
+            notes.setRecipe(this);
+            this.notes = notes;
+        }
     }
 
 }

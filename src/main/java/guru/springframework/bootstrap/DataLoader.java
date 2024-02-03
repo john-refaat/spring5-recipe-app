@@ -7,7 +7,6 @@ import guru.springframework.repositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -141,9 +140,9 @@ public class DataLoader implements CommandLineRunner {
                 "Garnish with slices of red radish or jigama strips. Serve with your choice of store-bought tortilla chips or make your own homemade tortilla chips.||" +
                 "Refrigerate leftover guacamole up to 3 days.||" +
                 "Note: Chilling tomatoes hurts their flavor. So, if you want to add chopped tomato to your guacamole, add it just before serving.");
-        Note note = new Note();
+        Notes note = new Notes();
         note.setContent("Chilling tomatoes hurts their flavor. So, if you want to add chopped tomato to your guacamole, add it just before serving.");
-        guacamole.setNote(note);
+        guacamole.setNotes(note);
         guacamole.setSource("Simply recipes");
         guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
 
