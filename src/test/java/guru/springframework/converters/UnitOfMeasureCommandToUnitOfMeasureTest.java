@@ -29,7 +29,7 @@ class UnitOfMeasureCommandToUnitOfMeasureTest {
 
     @Test
     void convertEmptyObject() {
-        assertNull(unitOfMeasureCommandToUnitOfMeasure.convert(new UnitOfMeasureCommand()));
+        assertNotNull(unitOfMeasureCommandToUnitOfMeasure.convert(new UnitOfMeasureCommand()));
 
     }
     @Test

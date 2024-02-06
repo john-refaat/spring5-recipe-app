@@ -1,5 +1,6 @@
 package guru.springframework.commands;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class IngredientCommand  {
 

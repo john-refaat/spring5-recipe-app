@@ -54,12 +54,12 @@ public class RecipeServiceImplIT {
 
         // When
         String updatedName = "Updated Name";
-        recipeCommand.setName(updatedName);
+        recipeCommand.setDescription(updatedName);
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
 
         // Then
         assertEquals(testRecipe.getId(), savedRecipeCommand.getId());
-        assertEquals(updatedName, savedRecipeCommand.getName());
+        assertEquals(updatedName, savedRecipeCommand.getDescription());
         assertEquals(testRecipe.getCategories().size(), savedRecipeCommand.getCategories().size());
         assertEquals(testRecipe.getIngredients().size(), savedRecipeCommand.getIngredients().size());
     }

@@ -66,6 +66,17 @@ class RecipeServiceImplTest {
         Mockito.verify(recipeRepository, Mockito.times(1)).findById(ArgumentMatchers.anyLong());
         Mockito.verify(recipeRepository, Mockito.never()).findAll();
 
+    }
 
+    @Test
+    void deleteById() {
+        // Given
+        Long idToDelete = new Long(2L);
+
+        //When
+        recipeService.deleteById(idToDelete);
+
+        //Then
+        Mockito.verify(recipeRepository, Mockito.times(1)).deleteById(idToDelete);
     }
 }

@@ -33,7 +33,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         }
         final RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(source.getId());
-        recipeCommand.setName(source.getDescription());
+        recipeCommand.setDescription(source.getDescription());
         source.getCategories().forEach(
                 category -> recipeCommand.getCategories().add(categoryToCategoryCommand.convert(category)));
         source.getIngredients().forEach(
