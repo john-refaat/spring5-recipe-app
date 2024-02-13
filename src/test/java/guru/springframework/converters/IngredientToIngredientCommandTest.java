@@ -2,6 +2,7 @@ package guru.springframework.converters;
 
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.domain.Ingredient;
+import guru.springframework.domain.Recipe;
 import guru.springframework.domain.UnitOfMeasure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class IngredientToIngredientCommandTest {
 
-    private final Long INGRED_ID = new Long(1L);
+    private final Long INGRED_ID = 1L;
     private final String INGRED_NAME = "test";
     private final String INGRED_UNIT_OF_MEASURE = "test";
-    private final BigDecimal INGRED_AMOUNT = new BigDecimal(2.0);
-    private final Long INGRED_UNIT_OF_MEASURE_ID = new Long(2L);
+    private final BigDecimal INGRED_AMOUNT = new BigDecimal("2.0");
+    private final Long INGRED_UNIT_OF_MEASURE_ID = 2L;
+    private final Long RECIPE_ID = 1L;
 
     private IngredientToIngredientCommand ingredientToIngredientCommand;
 
@@ -70,6 +72,10 @@ class IngredientToIngredientCommandTest {
         ingredient.setName(INGRED_NAME);
 
         ingredient.setAmount(INGRED_AMOUNT);
+        Recipe recipe = new Recipe();
+        recipe.setId(RECIPE_ID);
+        recipe.addIngredient(ingredient);
+        ingredient.setRecipe(recipe);
 
         IngredientCommand ingredientCommand = ingredientToIngredientCommand.convert(ingredient);
 
@@ -78,5 +84,6 @@ class IngredientToIngredientCommandTest {
         assertEquals(INGRED_NAME, ingredientCommand.getName());
         assertEquals(INGRED_AMOUNT, ingredientCommand.getAmount());
         assertNull(ingredientCommand.getUom());
+        assertEquals(RECIPE_ID, ingredientCommand.getRecipeId());
     }
 }
