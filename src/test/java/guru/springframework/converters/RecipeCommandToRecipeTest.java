@@ -65,12 +65,12 @@ class RecipeCommandToRecipeTest {
         recipeCommand.setServings(SERVINGS);
         recipeCommand.setSource(SOURCE);
         recipeCommand.setUrl(URL);
-        CategoryCommand e = new CategoryCommand();
-        e.setId(CAT_ID_1);
-        recipeCommand.getCategories().add(e);
-        e = new CategoryCommand();
-        e.setId(CAT_ID2);
-        recipeCommand.getCategories().add(e);
+        CategoryCommand e1 = new CategoryCommand();
+        e1.setId(CAT_ID_1);
+        CategoryCommand e2 = new CategoryCommand();
+        e2.setId(CAT_ID2);
+        recipeCommand.setCategories(new CategoryCommand[]{e1, e2});
+
         IngredientCommand i = new IngredientCommand();
         i.setId(INGRED_ID_1);
         recipeCommand.getIngredients().add(i);

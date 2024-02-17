@@ -1,8 +1,10 @@
 package guru.springframework.services;
 
+import guru.springframework.converters.CategoryToCategoryCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,10 +36,15 @@ class RecipeServiceImplTest {
     private RecipeToRecipeCommand recipeToRecipeCommand;
     @Mock
     private RecipeCommandToRecipe recipeCommandToRecipe;
+    @Mock
+    private CategoryRepository categoryRepository;
+    @Mock
+    private CategoryToCategoryCommand categoryToCategoryCommand;
 
     @BeforeEach
     void setUp() {
-        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand,
+                categoryRepository, categoryToCategoryCommand);
     }
 
     @Test

@@ -1,7 +1,9 @@
 package guru.springframework.controllers;
 
+import guru.springframework.commands.CategoryCommand;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.services.CategoryService;
 import guru.springframework.services.RecipeService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,11 +43,14 @@ class RecipeControllerTest {
     @Mock
     private RecipeService recipeService;
 
+    @Mock
+    private CategoryService categoryService;
+
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        recipeController = new RecipeController(recipeService);
+        recipeController = new RecipeController(recipeService, categoryService);
         mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
     }
@@ -108,6 +113,7 @@ class RecipeControllerTest {
         command.setId(2L);
 
         Mockito.when(recipeService.getRecipeCommandById(ArgumentMatchers.anyLong())).thenReturn(command);
+        Mockito.when(categoryService.findAllCategories()).thenReturn(new HashSet<CategoryCommand>());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/"+command.getId()+"/update"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -116,6 +122,7 @@ class RecipeControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attribute("recipe", Matchers.equalTo(command)));
 
         Mockito.verify(recipeService, Mockito.times(1)).getRecipeCommandById(ArgumentMatchers.anyLong());
+        Mockito.verify(categoryService, Mockito.times(1)).findAllCategories();
     }
 
     @Test

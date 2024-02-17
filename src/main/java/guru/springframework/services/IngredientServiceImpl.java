@@ -27,12 +27,14 @@ public class IngredientServiceImpl implements IngredientService {
     private final IngredientCommandToIngredient ingredientCommandToIngredient;
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final IngredientRepository ingredientRepository;
 
-    public IngredientServiceImpl(RecipeRepository recipeRepository, IngredientToIngredientCommand ingredientToIngredientCommand, IngredientCommandToIngredient ingredientCommandToIngredient, UnitOfMeasureRepository unitOfMeasureRepository) {
+    public IngredientServiceImpl(RecipeRepository recipeRepository, IngredientToIngredientCommand ingredientToIngredientCommand, IngredientCommandToIngredient ingredientCommandToIngredient, UnitOfMeasureRepository unitOfMeasureRepository, IngredientRepository ingredientRepository) {
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
         this.recipeRepository = recipeRepository;
         this.ingredientCommandToIngredient = ingredientCommandToIngredient;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     @Override
@@ -77,17 +79,19 @@ public class IngredientServiceImpl implements IngredientService {
                 .filter(x->x.getId().equals(ingredientCommand.getId()))
                 .findFirst();
 
+       Ingredient ingredientFound = new Ingredient();
+
         if(ingredientOptional.isEmpty()) {
-            Ingredient ingredient = ingredientCommandToIngredient.convert(ingredientCommand);
-            if(ingredient!=null)
-                recipe.addIngredient(ingredient);
+            ingredientFound = ingredientCommandToIngredient.convert(ingredientCommand);
+            if(ingredientFound!=null)
+                recipe.addIngredient(ingredientFound);
         }
 
         if(ingredientOptional.isPresent()) {
-            Ingredient ingredientFound = ingredientOptional.get();
+            ingredientFound = ingredientOptional.get();
             ingredientFound.setName(ingredientCommand.getName());
             ingredientFound.setAmount(ingredientCommand.getAmount());
-            if(ingredientCommand.getUom().getId().equals(0L)){
+            if(ingredientCommand.getUom()==null || ingredientCommand.getUom().getId().equals(0L)){
                 ingredientFound.setUom(null);
             } else {
                 Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findById(ingredientCommand.getUom().getId());
@@ -96,8 +100,16 @@ public class IngredientServiceImpl implements IngredientService {
 
         }
 
-        Recipe savedRecipe = recipeRepository.save(recipe);
-        return ingredientToIngredientCommand.convert(savedRecipe.getIngredients().stream()
-                .filter(x -> x.getId().equals(ingredientCommand.getId())).findFirst().orElseThrow(() -> new RuntimeException("Ingredient Not Saved")));
+        Ingredient savedIngredient = ingredientRepository.save(ingredientFound);
+        //Recipe savedRecipe = recipeRepository.save(recipe);
+        //Optional<Ingredient> savedIngredient = savedRecipe.getIngredients().stream().filter(x -> x.getId().equals(ingredientCommand.getId())).findFirst();
+
+        return ingredientToIngredientCommand.convert(savedIngredient);
+    }
+
+    @Override
+    public void deleteIngredientById(Long ingredientId) {
+        log.info("Delete Ingredient ID: " + ingredientId);
+        ingredientRepository.deleteById(ingredientId);
     }
 }

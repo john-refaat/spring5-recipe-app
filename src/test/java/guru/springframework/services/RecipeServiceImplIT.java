@@ -60,7 +60,7 @@ public class RecipeServiceImplIT {
         // Then
         assertEquals(testRecipe.getId(), savedRecipeCommand.getId());
         assertEquals(updatedName, savedRecipeCommand.getDescription());
-        assertEquals(testRecipe.getCategories().size(), savedRecipeCommand.getCategories().size());
+        assertEquals(testRecipe.getCategories().size(), savedRecipeCommand.getCategories().length);
         assertEquals(testRecipe.getIngredients().size(), savedRecipeCommand.getIngredients().size());
     }
 }

@@ -3,12 +3,14 @@ package guru.springframework.controllers;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
+import guru.springframework.services.CategoryService;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -20,9 +22,11 @@ import java.util.Set;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final CategoryService categoryService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, CategoryService categoryService) {
         this.recipeService = recipeService;
+        this.categoryService = categoryService;
     }
 
     @RequestMapping("recipes")
@@ -52,6 +56,7 @@ public class RecipeController {
     @RequestMapping("recipe/{id}/update")
     public String updateRecipe(Model model, @PathVariable String id) {
         model.addAttribute("recipe", recipeService.getRecipeCommandById(Long.valueOf(id)));
+        model.addAttribute("categories", categoryService.findAllCategories());
         return "recipe/recipeform";
     }
 
@@ -60,6 +65,7 @@ public class RecipeController {
     public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
         log.info("Recipe command Saved: " + command);
+        log.info("Cat Ids: "+ Arrays.toString(command.getCategoryIds()));
         return "redirect:/recipe/"+savedCommand.getId()+"/show";
     }
 

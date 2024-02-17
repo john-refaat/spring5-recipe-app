@@ -32,16 +32,14 @@
                             <label>Categories:</label>
                         </div>
                         <div class="col-md-10 form-group">
-                            <div class="radio">
-                                <label>
-                                    <input type="checkbox" name="category" value="Breakfast">Breakfast
-                                    <input type="checkbox" name="category" value="Lunch">Lunch
-                                    <input type="checkbox" name="category" value="Dinner">Dinner
-                                </label>
+                            <div class="form-control">
+                                <div class="row">
+                                    <div class="col-md-2" th:each="category, stat: ${categories}">
+                                        <input type="checkbox" name="categories" th:value="${category.id}"
+                                               th:text="${category.name}" th:field="*{categoryIds}">
+                                    </div>
+                                </div>
                             </div>
-                            <ul>
-                                <li th:each="category: ${recipe.categories}" th:text="${category.name}">Category</li>
-                            </ul>
                         </div>
                     </div>
                     <div class="row">
@@ -54,11 +52,15 @@
                         <div class="col-md-2">
                             <label>Difficulty:</label>
                         </div>
-                        <div class="col-md-4">
-                            <select>
-                                <option>Easy</option>
-                                <option>Medium</option>
-                                <option>Hard</option>
+                        <div class="col-md-4 form-group">
+                            <select class="form-control" th:field="*{difficulty}">
+                                <option th:each="level : ${T(guru.springframework.domain.Difficulty).values()}"
+                                th:value="${level.name()}" th:text="${level.name()}">Val</option>
+                            </select>
+                            <select th:class="form-control" th:remove="all">
+                                <option>EASY</option>
+                                <option>MEDIUM</option>
+                                <option>HARD</option>
                             </select>
                         </div>
                     </div>

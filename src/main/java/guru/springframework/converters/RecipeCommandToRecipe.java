@@ -7,6 +7,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Stream;
+
 /**
  * @author john
  * @since 01/02/2024
@@ -45,9 +47,12 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         recipe.setCookTime(source.getCookTime());
         recipe.setPrepTime(source.getPrepTime());
         recipe.setImage(source.getImage());
-        source.getCategories().forEach(categoryCommand -> {
-            recipe.getCategories().add(categoryCommandToCategory.convert(categoryCommand));
-        });
+        if(source.getCategories()!=null) {
+            Stream.of(source.getCategories()).forEach(categoryCommand -> {
+                recipe.getCategories().add(categoryCommandToCategory.convert(categoryCommand));
+            });
+        }
+
         source.getIngredients().forEach(ingredientCommand -> {
             recipe.addIngredient(ingredientCommandToIngredient.convert(ingredientCommand));
         });

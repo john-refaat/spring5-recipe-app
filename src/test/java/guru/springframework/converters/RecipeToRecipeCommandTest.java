@@ -81,7 +81,7 @@ class RecipeToRecipeCommandTest {
         assertEquals(RECIPE_ID, recipeCommand.getId());
         assertNotNull(recipeCommand.getCategories());
         assertNotNull(recipeCommand.getIngredients());
-        assertEquals(2, recipeCommand.getCategories().size());
+        assertEquals(2, recipeCommand.getCategories().length);
         assertEquals(2, recipeCommand.getIngredients().size());
         assertNotNull(recipeCommand.getNotes());
         assertEquals(NOTES_ID, recipeCommand.getNotes().getId());

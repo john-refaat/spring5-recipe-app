@@ -8,6 +8,7 @@ import guru.springframework.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
 import guru.springframework.domain.UnitOfMeasure;
+import guru.springframework.repositories.IngredientRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +43,9 @@ class IngredientServiceImplTest {
     private RecipeRepository recipeRepository;
 
     @Mock
+    private IngredientRepository ingredientRepository;
+
+    @Mock
     private UnitOfMeasureRepository unitOfMeasureRepository;
 
     private IngredientToIngredientCommand ingredientToIngredientCommand;
@@ -54,7 +58,7 @@ class IngredientServiceImplTest {
     void setUp() {
         ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
         ingredientCommandToIngredient = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
-        ingredientService = new IngredientServiceImpl(recipeRepository, ingredientToIngredientCommand, ingredientCommandToIngredient, unitOfMeasureRepository);
+        ingredientService = new IngredientServiceImpl(recipeRepository, ingredientToIngredientCommand, ingredientCommandToIngredient, unitOfMeasureRepository, ingredientRepository);
     }
 
     @Test
@@ -104,7 +108,8 @@ class IngredientServiceImplTest {
 
         //When
         Mockito.when(recipeRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(recipe));
-        Mockito.when(recipeRepository.save(ArgumentMatchers.any(Recipe.class))).thenReturn(savedRecipe);
+       // Mockito.when(recipeRepository.save(ArgumentMatchers.any(Recipe.class))).thenReturn(savedRecipe);
+        Mockito.when(ingredientRepository.save(ArgumentMatchers.any(Ingredient.class))).thenReturn(savedIngredient);
 
         IngredientCommand returnedIngredientCommand = ingredientService.saveOrUpdateIngredient(ingredientCommand);
 
@@ -135,5 +140,19 @@ class IngredientServiceImplTest {
         recipe.addIngredient(ingredient2);
         recipe.addIngredient(ingredient3);
         return Optional.of(recipe);
+    }
+
+    @Test
+    public void deleteIngredientCommand() {
+        //Given
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setId(INGREDIENT_ID);
+        ingredientCommand.setRecipeId(RECIPE_ID);
+
+        //When
+        ingredientService.deleteIngredientById(ingredientCommand.getId());
+
+        //Then
+        Mockito.verify(ingredientRepository, Mockito.times(1)).deleteById(ArgumentMatchers.anyLong());
     }
 }
