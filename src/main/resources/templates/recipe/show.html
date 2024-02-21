@@ -22,11 +22,16 @@
                             <div class="col-md-2">
                                 <h5>Categories:</h5>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-3">
                                 <ul>
                                     <li th:each="category: ${recipe.categories}" th:text="${category.name}">Category</li>
                                 </ul>
                             </div>
+                            <div class="col-md-5">
+                                <img th:if="${recipe.image}" th:src="@{'/recipe/' + ${recipe.id} + '/image/show'}" alt="Yummy!" width="300px" class="float-end" />
+                                <img th:unless="${recipe.image}" th:src="@{/img/default.jpg}" alt="Yummy!" width="300px" class="float-end" />
+                            </div>
+
                         </div>
                         <div class="row">
                             <div class="col-md-2">

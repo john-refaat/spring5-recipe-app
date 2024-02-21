@@ -34,7 +34,7 @@
               <div class="col-md-4 form-group">
                 <label>Unit of Measure</label>
                 <select class="form-control" name="uom.id">
-                  <option th:each="uom: ${uoms}" th:value="${uom.id}" th:text="${uom.name}"
+                  <option th:each="uom: ${uoms}"  th:value="${uom.id}" th:text="${uom.name}"
                           th:selected="${uom.equals(ingredient.uom)}"></option>
                   <option th:value="0" th:selected="${ingredient.uom == null}">None</option>
                 </select>
