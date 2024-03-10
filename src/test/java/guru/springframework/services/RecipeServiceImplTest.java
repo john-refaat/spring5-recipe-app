@@ -4,6 +4,7 @@ import guru.springframework.converters.CategoryToCategoryCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,6 +74,14 @@ class RecipeServiceImplTest {
         Mockito.verify(recipeRepository, Mockito.times(1)).findById(ArgumentMatchers.anyLong());
         Mockito.verify(recipeRepository, Mockito.never()).findAll();
 
+    }
+
+    @Test
+    void getRecipeByIdNotFound() {
+        Mockito.when(recipeRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> {
+            recipeService.getRecipeById(1L);
+        });
     }
 
     @Test
