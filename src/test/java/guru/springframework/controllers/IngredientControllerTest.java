@@ -46,7 +46,8 @@ class IngredientControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(ingredientController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(ingredientController)
+                .setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test
@@ -113,6 +114,14 @@ class IngredientControllerTest {
 
         // Then
         Mockito.verify(recipeService, Mockito.times(1)).getRecipeCommandById(ArgumentMatchers.anyLong());
+    }
+
+    @Test
+    void newIngredientFormNumberFormatException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/abcd/ingredient/new"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.view().name("400error"));
+        Mockito.verify(recipeService, Mockito.never()).getRecipeCommandById(ArgumentMatchers.anyLong());
     }
 
     @Test
