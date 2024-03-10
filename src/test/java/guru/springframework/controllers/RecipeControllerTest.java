@@ -48,13 +48,15 @@ class RecipeControllerTest {
     @Mock
     private CategoryService categoryService;
 
+    private ControllerExceptionHandler controllerExceptionHandler;
+
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
         recipeController = new RecipeController(recipeService, categoryService);
-        mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
-
+        mockMvc = MockMvcBuilders.standaloneSetup(recipeController)
+                .setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test
@@ -154,12 +156,21 @@ class RecipeControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
                         .param("id", "2")
-                        .param("name", "Pizza")
-                        .param("description", "Pizza description"))
+                        .param("description", "Pizza description")
+                        .param("directions", "recipe directions"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/recipe/2/show"));
 
         Mockito.verify(recipeService, Mockito.times(1)).saveRecipeCommand(ArgumentMatchers.any(RecipeCommand.class));
+    }
+
+    @Test
+    void saveOrUpdateFailure() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
+                        .param("id", "2"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("recipe/recipeform"));
+        Mockito.verify(recipeService, Mockito.never()).saveRecipeCommand(ArgumentMatchers.any(RecipeCommand.class));
     }
 
     @Test

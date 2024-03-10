@@ -43,7 +43,8 @@ class ImageControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(imageController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(imageController)
+                .setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test
@@ -52,6 +53,13 @@ class ImageControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/image/upload"))
                .andExpect(MockMvcResultMatchers.status().isOk())
                .andExpect(MockMvcResultMatchers.view().name("/recipe/imageUpload"));
+    }
+
+    @Test
+    void getUploadImageFromNumberFormatException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/abcd/image/upload"))
+             .andExpect(MockMvcResultMatchers.status().isBadRequest())
+             .andExpect(MockMvcResultMatchers.view().name("400error"));
     }
 
     @Test
