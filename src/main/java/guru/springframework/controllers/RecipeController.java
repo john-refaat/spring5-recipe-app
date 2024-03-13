@@ -65,10 +65,12 @@ public class RecipeController {
         return "recipe/recipeform";
     }
 
-    @PostMapping
-    @RequestMapping("recipe")
-    public String saveOrUpdate(@Valid @ModelAttribute RecipeCommand recipe, BindingResult bindingResult) {
+    @PostMapping({"recipe/{id}/update", "recipe/new"})
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipe, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("recipe", recipe);
+            model.addAttribute("categories", categoryService.findAllCategories());
+
             bindingResult.getAllErrors().forEach(objectError -> log.error("Error saving or updating: "+objectError.toString()));
             return "recipe/recipeform";
         }
