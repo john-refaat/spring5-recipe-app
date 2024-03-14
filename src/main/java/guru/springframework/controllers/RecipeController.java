@@ -52,9 +52,10 @@ public class RecipeController {
         return "recipe/show";
     }
 
-    @RequestMapping("recipe/new")
+    @GetMapping("recipe/new")
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
+        model.addAttribute("categories", categoryService.findAllCategories());
         return "recipe/recipeform";
     }
 
