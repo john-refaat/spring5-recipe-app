@@ -154,7 +154,7 @@ class RecipeControllerTest {
 
         Mockito.when(recipeService.saveRecipeCommand(ArgumentMatchers.any(RecipeCommand.class))).thenReturn(command);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
+        mockMvc.perform(MockMvcRequestBuilders.post("/recipe/2/update")
                         .param("id", "2")
                         .param("description", "Pizza description")
                         .param("directions", "recipe directions"))
@@ -166,7 +166,7 @@ class RecipeControllerTest {
 
     @Test
     void saveOrUpdateFailure() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/recipe")
+        mockMvc.perform(MockMvcRequestBuilders.post("/recipe/2/update")
                         .param("id", "2"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("recipe/recipeform"));
